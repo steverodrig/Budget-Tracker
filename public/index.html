@@ -45,6 +45,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script src="index.js"></script>
+  <script src="/db.js"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
@@ -55,28 +56,6 @@
       });
     }
   </script>
-  <script>
-    const request = window.indexedDB.open("transaction", 1);
-
-    request.onupgradeneeded = ({ target }) => {
-        const db = target.result;
-        const objectStore = db.createObjectStore("transactions", {keyPath: "transID"});
-        objectStore.createIndex("name", "name");
-        objectStore.createIndex("value", "value");
-      };
-
-    request.onsuccess = event => {
-      console.log(request.result.name);
-      const db = request.result;
-        const transaction = db.transaction(["transactions"], "readwrite");
-        const transactionStore = transaction.objectStore("transactions");
-        const name = transactionStore.index("name");
-        const value = transactionStore.index("value");
-
-        transactionStore.add({ transID: "1", name: "Test", value: "300" })
-    };
-  </script>
-
 </body>
 
 </html>
